@@ -22,4 +22,8 @@ int main()
     cout << "Value of score is: " << score << endl;
     cout << "Address of score is: " << &score << endl;
     cout << "Value of score_ptr is: " << score_ptr << endl;
+
+    // score_ptr = &high_temp;
+    //since the data type is different it show compile error
+    return 0;
 }
