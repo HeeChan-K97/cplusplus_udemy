@@ -20,3 +20,12 @@ int main(){
     cout << endl;
     return 0;
 }
+
+------------------------------------------------------------------------------------------------------------------------------
+
+/*L-values = An l-value is an object that occupies a location in memory and is addressable.
+    values that have names and are addressable
+    modifiable if they are not constants
+
+  R-value - anything that's not an l-value is an r-value.
+  Usually, r-values on the right-hand side of an assignment expression.
