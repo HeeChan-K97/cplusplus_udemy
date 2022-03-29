@@ -19,3 +19,45 @@ Account *frank_account = new Account();
 
     i. frank_account->balance;
     ii. frank_account->deposit(1000.00);
+
+-------------------------------------------------------------------------------------------------
+
+1. Implementing Member Methods - Inside the class declaration
+
+class Account {
+    private:
+        double balance;
+    public:
+        void set_balance(double bal){
+            balance = bal;
+        }
+
+        //since the member 'balance' is the private member of the class Account, we need a "METHOD" to 
+        //access the private member. And this method can be declared inside or outside of the class declaration.
+        double get_balance(){
+            return balance;
+        }
+};
+
+2. Implementing Member Methods - Outside the class declaration
+
+class Account {
+    private:
+        double balance;
+    public:
+        void set_balance(double bal);
+        double get_balance();
+};
+
+void Account::set_balance(double bal) {//use scope resolution operator
+    balance = bal;
+}
+double Account::get_balance() {
+    return balance;
+}
+
+3. When we are making a cpp file and need to include a hearder file of my own
+
+    syntax) eg)  
+                #include "Account.h"  //이런 식으로 만들면 된다.
+                                    //이미 있는 헤더 파일은 기존에 선언하듯이 <>를 사용하여 넣어주면 된다.
