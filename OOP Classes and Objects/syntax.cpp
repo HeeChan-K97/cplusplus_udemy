@@ -61,3 +61,44 @@ double Account::get_balance() {
     syntax) eg)  
                 #include "Account.h"  //이런 식으로 만들면 된다.
                                     //이미 있는 헤더 파일은 기존에 선언하듯이 <>를 사용하여 넣어주면 된다.
+------------------------------------------------------------------------------------------------------------
+Constr uctor Initialization List_
+ //! PREVIOUS:
+ Player::Player(){
+     name = "None";
+     health =0;
+     xp =0;
+ }
+ //! BETTER:
+ Player::Player()
+    : name{"None"}, health{0}, xp{0} {
+    }//이렇게 되면 constructor의 메인 바디가 실행되기도 전에 member들이 초기화되게 된다.
+    //Constr uctor Initialization List가 유용한 이유는 이런 형식으로 선언을 하게 되면 초음부터 초기화가 가능하기 때문이다
+    //보통 방식으로 하게되면 초기화가 아니라 assigning이 되기 때문에 inefficient하다.
+------------------------------------------------------------------------------------------------------------    
+Delegating Constructors
+
+1. Player::Player(std::string name_val, int health_val, int xp_val)
+    : name{name_val}, health{health_val}, xp{xp_val} {
+    }
+2. Player::Player()
+    : Player {"None",0 ,0}{//this is delegation of constructor
+    }
+3. Player::Player()
+    : Player {name_val, 0, 0}{
+    } 
+------------------------------------------------------------------------------------------------------------
+Default Constructor Parameters
+
+class Player
+{
+    private:
+        std::string name;
+        int health;
+        int xp;
+    public:
+    //Constructor with default parameter values
+    Player(std::string name_val = "None",
+           int health_val = 0,
+           int xp_val = 0);
+};//default constructor parameter is declared inside the constructor delcaration in the class 
