@@ -61,5 +61,22 @@ Access specifier, Protected:
 *** private members of the Base class is always private thata derived class can never get access
 *** private inheritance makes the members of the derived class private
 어떤 base class의 private 멤버의 값을 바꾸고 싶거나 정의하고 싶을때는 반드시 Base class에 주어진 getter and setter functions들을 통해서만 변경이 가능하다.
-즉, private를 base class가 아닌 다른 클래스에서 바꾸고 싶다면 그에 맞는 public 함수가 필요하다.
+즉, private를 base class가 아닌 다른 클래스에서 바꾸고 싶다면 그에 맞는 public 함수가 필요하다.; Read the Abstraction below;
 
+------------------------------------------------------------------------------------------
+
+What is Abstraction?
+: Abstraction means displaying only essential information and hiding the details. Data abstraction refers to providing only essential 
+    information about the data to the outside world, hiding the background details or implementation.
+
+* Abstraction using Classes: We can implement Abstraction in C++ using classes. Class helps us to group data members and member functions
+    using available access specifiers. A Class can decide which data member will be visible to outside world and which is not.
+
+Advantages of Data Abstraction:
+
+Helps the user to avoid writing the low level code
+Avoids code duplication and increases reusability.
+Can change internal implementation of class independently without affecting the user.
+Helps to increase security of an application or program as only important details are provided to the user;
+
+------------------------------------------------------------------------------------------
