@@ -80,3 +80,38 @@ Can change internal implementation of class independently without affecting the 
 Helps to increase security of an application or program as only important details are provided to the user;
 
 ------------------------------------------------------------------------------------------
+<Passing argument to base class constructors>
+// class Base {
+//     public:
+//         Base();
+//         Base(int);
+//         . . .
+// };
+
+// Derived::Derived(int x)
+//     : Base(x), {/"optional initializers for Derived"/} {
+//         //code
+//     }
+<Constructor and class initialization;>
+
+class Base {
+    int value;
+public:
+    Base():value{0} {
+        std::cout<<"Base no-args constructor"<<std::endl;
+    }
+    Base (int x):value{x} {
+        std::cout<<"int Base constructor"<<std::endl;
+    }
+};
+
+class Derived : public Base {
+    int doubled_value;
+public:
+    Derived():Base{}, doubled_value{0} {
+        std::cout<<"Derived no-args constructor"<<std::endl;
+    }
+    Derived(int x):Base{x}, doubled_value {x*2} {//overloaded constructor, expects the parameter
+        std::cout<<"int Derived constructor"<<std::endl;
+    }
+};
