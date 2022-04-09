@@ -130,5 +130,22 @@ int main(){
  *  derived class에서 컨스트럭터를 만들면 해당 베이스 클래스에 같은 모양의 컨스터럭터를 거치고 derived class의 constructor를 거치게 된다. 
     그래서 항상 베이스 클래스에 있는 contructor가 먼저 출력되게 된다.
 
-<Copy constructor>
-sdqwd
+<Using and redefining Base class methods>
+
+1. Override
+
+    class Account {
+        public:
+            void deposit(double amount) {balance += amount;}
+    };
+
+    class Savings_Account: public Account{
+        public:
+            void deposit(double amount) { //Redefine base class method
+                amount+=some_interest;
+                Account::deposit(amount);   //invoke call Base class method
+            }
+    };
+
+=================================================================================
+//! EXAMPLE:
