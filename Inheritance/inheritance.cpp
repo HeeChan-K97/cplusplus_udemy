@@ -113,5 +113,21 @@ public:
     }
     Derived(int x):Base{x}, doubled_value {x*2} {//overloaded constructor, expects the parameter
         std::cout<<"int Derived constructor"<<std::endl;
-    }
+    }//this constructor also invokes the base class overloaded in its initializedr list.
+    //and then it initializes its own doubled value attribute to 2 times x.
+    //and finally, it displays int derived constructor
 };
+
+eg)
+int main(){
+    Derived d {1000};//
+    return 0;
+}
+ *  해당 base class의 constructor를 거치기 때문에 int x를 인자롤 받는 컨스트럭터가 발동되고 'value'라는 변수를 1000으로 초기화 시킨다.
+    그 후, derived class의 constructor로 들어와서 또 인자 int x를 받는 컨스트럭터를 발돌 시킨다.
+    그럼 변수 'doubled_value'를 거치면서 그 값을 1000*2인 2000으로 만들어 준다.
+
+ *  derived class에서 컨스트럭터를 만들면 해당 베이스 클래스에 같은 모양의 컨스터럭터를 거치고 derived class의 constructor를 거치게 된다. 
+    그래서 항상 베이스 클래스에 있는 contructor가 먼저 출력되게 된다.
+
+<Copy constructor>
