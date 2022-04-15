@@ -102,3 +102,50 @@ class Player
            int health_val = 0,
            int xp_val = 0);
 };//default constructor parameter is declared inside the constructor delcaration in the class 
+
+====================================================================================================
+1. move semantic
+WHEN IS IT USEFUL?
+-> Sometimes copy constructors are called many times automatically due to the copy semantics of C++
+-> Copy constructors doing deep copying can have a significant performance bottleneck좁은[번잡한] 도로
+-> C++11 introduced move semantics and the move constructor
+-> Move constructor moves an object rather than copy in
+-> Optional but recommended when you have a raw pointer
+-> Copy elision -C++ may optimize copying away completely (RVO-Return Value Optimization)
+
+2. r-value references
+
+/*  L-values = An l-value is an object that occupies a location in memory and is addressable.
+    values that have names and are addressable
+    modifiable if they are not constants;
+
+    R-value - anything that's not an l-value is an r-value.
+    Usually, r-values on the right-hand side of an assignment expression;
+*/
+
+int x {100} //integer x initialized to 100 and x is l-value
+    int &l_ref = x; //l-valeu reference
+    l_ref = 10;     // change x to 10
+
+    int &&r_ref = 200;  // r-value ref
+    r_ref = 300;        //change r_ref to 300
+
+    int &&x_ref = x;    //compile error, since we are trying to assign L-value to R-value reference
+
+3. l-value reference parameters
+
+    int x {100};//integer x initialized to 100 and x is l-value
+
+    void func (int &num);   //A, the func demands l-value reference
+
+    func(x);    //calls A-x is an l-value
+    func(200);  //ERROR -200 is an r-value
+
+4. r-value reference parameters
+
+    int x {100};//integer x initialized to 100 and x is l-value
+
+    void func (int &&num);   //B, the func demands r-value reference
+
+    func(200);    //calls B - 200 is an r-value
+    func(x);  //ERROR - x is an l-value
