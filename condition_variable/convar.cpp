@@ -72,3 +72,63 @@ int main(){
 
     return 0;
 }
+
+Neither join nor detach thread will not execute. 
+So we need to make a decision whether we want to join or detach the thread before a thread going out of scope
+
+void function_1(){
+    std::cout << "Beauty us only skin-deep" << std::endl;
+}
+
+int main(){
+    std::thread t1(function_1); // t1 starts running
+
+    //Alternatively USING RAII
+    Wrapper w(t1);
+    //the destructor of the wrapper will automatically join the thread 
+
+    std::try {
+        for (int i=0; i<100; i++)
+            std::cout<< "from main: " << i << endl;
+    } catch (...){
+        t1.join();
+        throw;
+    }
+
+    t1.join();
+    return 0;
+}
+
+** std::move()
+    eg) std::thread t2 = t1; // compile error
+        std::thread t2 = std::move(t1); //corret way to copy the thread to another
+
+** std::ref()
+
+===Printing out the parent thread's ID===
+-> std::cout << std::this_thread::get_id() << std::endl;
+//if we put this commend inside the child thread 'this' becomes the child and prints out the child thread's ID
+
+===Printing out the child thread's ID===
+-> std::cout << t1.get_id() << std::endl;
+
+===To avoid "Oversubscription" we can check how many threads can run concurrently===
+-> std::thread::hardware_concurrency(); //Indication
+
+========================================================================================================vv
+RACE CONDITION AND MUTEX
+
+* Race condition = one or more threads executing for the common resources
+* One of the way to solve this problem is using mutex to synchronize the access of the common resource
+* 만약 cout에 관련된 문제로 oversubscription이 발생한다면 cout을 share할 수 있는 함수를 만들어주는 것이 해결책이 된다.
+    Mutex of Synchronize the access of common resource among a group of threads
+    참고: https://www.youtube.com/watch?v=3ZxZPeXPaM4&t=1s  (From 3:00)
+*Sometimes we might face a exception that might lock the contents forever, in the case we use "lock_guard"
+    eg) std::lock_guard<std::mutex> guard(mu);
+*In order to protect the resource completely, the mutex must be bundled together with the resource it is protecting
+    참고: https://www.youtube.com/watch?v=3ZxZPeXPaM4&t=1s (From 5:39)
+
+===Avoiding Data Race===
+1. Use mutex to synchronize data access
+2. Never leak a handle of data to outside
+3. Design interface appropriately
