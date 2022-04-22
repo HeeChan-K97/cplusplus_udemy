@@ -137,3 +137,182 @@ syntax and its example)
         std::cout<<movie_ratings.at(0).at(3)<<std::endl;//row # 1
         
         std::cout<<std::endl;
+
+
+===================STL Based syntax========================
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main() {
+    cout << "Vector from initializer list: " << endl;
+    vector<int> vi1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    
+    cout << "size: " << vi1.size() << endl;
+    cout << "front: " << vi1.front() << endl;
+    cout << "back: " << vi1.back() << endl;
+    
+    // iterator
+    cout << endl << "Iterator:" << endl;
+    vector<int>::iterator itbegin = vi1.begin();
+    //auto itbegin = vi1.begin();
+    vector<int>::iterator itend = vi1.end();
+    //auto itend = vi1.end();
+    for (auto it = itbegin; it < itend; ++it) {
+        cout << *it << ' ';
+    }
+    cout << endl;
+    
+    cout << endl << "Index:" << endl;
+    cout << "element at 5: " << vi1[5] << endl;//indexing the vector
+    cout << "element at 5: " << vi1.at(5) << endl;//using at function
+    
+    //range based for loop
+    cout << endl << "Range-based for loop:" << endl;
+    for (int & i : vi1) {
+        cout << i << ' ';
+    }
+    cout << endl;
+    
+    cout << endl << "Insert 42 at begin + 5: " << endl;
+    vi1.insert(vi1.begin() + 5, 42);//5번째 원소에 42 집어넣기
+    cout << "size: " << vi1.size() << endl;
+    cout << "vi1[5]: " << vi1[5] << endl;
+    
+    cout << "Erase at begin + 5: " << endl;
+    vi1.erase(vi1.begin() + 5);
+    cout << "size: " << vi1.size() << endl;
+    cout << "vi1[5]: " << vi1[5] << endl;
+    
+    cout << "push_back 47: " << endl;
+    vi1.push_back(47);
+    cout << "size: " << vi1.size() << endl;
+    cout << "vi1.back() " << vi1.back() << endl;
+    
+    cout << "Range-based for loop: " << endl;
+    for(int & v : vi1) {
+        cout << v << ' ';
+    }
+    cout << endl << endl;
+    
+    // from C-array
+    const static size_t size = 10;
+    int ia[size] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    cout << endl << "Vector from C-array: " << endl;
+    vector<int> vi2(ia, ia + size);
+    for( int & i : vi2 ) {
+        cout << i << ' ';
+    }
+    cout << endl << endl;
+    
+    // vector of strings
+    cout << "Vector of strings:" << endl;
+    vector<string> vs = { "one", "two", "three", "four", "five" };
+    for(string & v : vs) {
+        cout << v << endl;
+    }
+    
+    return 0;
+}
+
+출력값: 
+
+Vector from initializer list: 
+size: 10
+front: 1
+back: 10
+
+Iterator:
+1 2 3 4 5 6 7 8 9 10 
+
+Index:
+element at 5: 6
+element at 5: 6
+
+Range-based for loop:
+1 2 3 4 5 6 7 8 9 10 
+
+Insert 42 at begin + 5: 
+size: 11
+vi1[5]: 42
+Erase at begin + 5: 
+size: 10
+vi1[5]: 6
+push_back 47: 
+size: 11
+vi1.back() 47
+Range-based for loop: 
+1 2 3 4 5 6 7 8 9 10 47 
+
+
+Vector from C-array: 
+1 2 3 4 5 6 7 8 9 10 
+
+Vector of strings:
+one
+two
+three
+four
+five
+
+===========================================iostream-formatting====================================================
+
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    // cout and cin to get a string
+    string istr;
+    cout << "Prompt: ";
+    cin >> istr;    // one word at a time
+    cout << "Input: " << istr << endl;
+    
+    // integer formatting
+    cout << "Integer formatting:" << endl;
+    int i1 = 42;
+    int i2 = 127;
+    int i3 = 5555;
+    cout << "default: " << i1 << ' ' << i2 << ' ' << i3 << endl;
+    cout << "hex: " << hex << i1 << ' ' << i2 << ' ' << i3 << endl;
+    cout << "hex with showbase: " << showbase << hex << i1 << ' ' << i2 << ' ' << i3 << endl;
+    cout << "octal with showbase: " << oct << i1 << ' ' << i2 << ' ' << i3 << endl;
+    cout << "default: " << noshowbase << dec << i1 << ' ' << i2 << ' ' << i3 << endl;
+    
+    // floating point formatting options
+    cout << endl << "Floating point formatting:" << endl;
+    double d1, d2, d3;
+    d1 = 3.1415926534;
+    d2 = 1234.5;
+    d3 = 4.2e-10;
+    cout << "default: " << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    cout << "fixed: " << fixed << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    cout << "scientific: " << scientific << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    cout << "fixed (3): " << setprecision(3) << fixed << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    cout << "scientific (7): " << setprecision(7) << scientific << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    cout.unsetf(ios_base::floatfield);
+    cout << "default: " << d1 << ' ' << d2 << ' ' << d3 << ' ' << endl;
+    
+    // string formatting options
+    cout << endl << "String formatting:" << endl;
+    string s1 = "This is a string.";
+    string s2 = "This is a much longer string.";
+    string s3 = "Today's news: Big Light in Sky Slated to Appear in East";
+    
+    cout << s1 << endl;
+    cout << s2 << endl;
+    cout << s3 << endl;
+    
+    cout << setw(64) << right << s1 << endl;
+    cout << setw(64) << right << s2 << endl;
+    cout << setw(64) << right << s3 << endl;
+    
+    cout << setfill('-') << setw(64) << right << s1 << endl;
+    cout << setfill(' ') << setw(64) << right << s1 << endl;
+    cout << left << s1 << endl;
+    
+    return 0;
+}
