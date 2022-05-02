@@ -98,6 +98,12 @@ int main(){
     t1.join();
     return 0;
 }
+If the thread is neither joined nor detached?
+: if a thread object is destroyed before join or detach then the program will terminate
+So we need to make a decision whether we join the thread or detach the thread before the thread object gone out of scope
+Parameter to a thread is always passed by its value
+if we want to pass the thread by its reference we have to std::ref()
+
 
 ** std::move()
     eg) std::thread t2 = t1; // compile error
