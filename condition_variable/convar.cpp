@@ -60,7 +60,7 @@ void function_1(){//producer
         // }
     }
 }
-
+===============================================THREAD MANAGEMENT============================================================
 int main(){
 
     //creating thread
@@ -85,7 +85,7 @@ int main(){
 
     //Alternatively USING RAII
     Wrapper w(t1);
-    //the destructor of the wrapper will automatically join the thread 
+    //the destructor of the wrapper will automatically join the thread when the 'w' go out of scope
 
     std::try {
         for (int i=0; i<100; i++)
@@ -101,7 +101,7 @@ int main(){
 
 ** std::move()
     eg) std::thread t2 = t1; // compile error
-        std::thread t2 = std::move(t1); //corret way to copy the thread to another
+        std::thread t2 = std::move(t1); //correct way to copy the thread to another
 
 ** std::ref()
 
