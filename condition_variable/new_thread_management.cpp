@@ -175,3 +175,31 @@ from main: How we pass the string by reference
 
 ===To avoid "Oversubscription" we can check how many threads can run concurrently===
 -> std::thread::hardware_concurrency(); //Indication
+===================================================================================
+Example 4:
+
+#include <iostream>
+#include <thread>
+
+static bool s_Finished = false;
+
+void DoWork(){
+    using namespace std::literals::chrono_literals;
+
+    while(!s_Finished){
+        std::cout << "Working...\n";
+        std::this_thread::sleep_for(1s);
+    }
+}
+
+int main() {
+    std::thread worker(DoWork);
+
+    std::cin.get();//wait until ENTER pressed by the user
+    s_Finished = true;
+    
+    worker.join();
+    std::cout << "Finished." << std::endl;
+
+    std::cin.get();
+}
