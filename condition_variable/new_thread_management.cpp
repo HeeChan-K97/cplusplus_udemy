@@ -25,7 +25,7 @@ int main(){
     std::thread t1(function_1);//thread object t1 is constructed with a function_1 parameter
                                //t1 start running
     t1.join();//which means the main thread(메인함수) waits for t1 to finish
-    //여기까지만 하면, 이 함수를 통해서 출력되는 것은 child thread인 t1에 의한 출력창이 된다. And we have thwo thread running which are the main thread and the child thread, t1.
+    //여기까지만 하면, 이 함수를 통해서 출력되는 것은 child thread인 t1에 의한 출력창이 된다. And we have two thread running which are the main thread and the child thread, t1.
     t1.detach(); //with the thread detached, t1 will run freely on its own which is called DAEMON PROCESS.
                 //the main thread is no longer connected to child thread so the C++ runtime library will be responsible to reclaim the resource of t1.
                 //Some Daemon process will run until the program shut down
@@ -40,3 +40,138 @@ int main(){
 
     return 0;
 }
+=============================================================================================
+
+If the thread is neither joined nor detached?
+: if a thread object is destroyed before join or detach then the program will terminate
+So we need to make a decision whether we join the thread or detach the thread before the thread object gone out of scope
+
+#include <iostream>
+#include <thread>
+using namespace std;
+
+void function_1(){
+    std::cout << "Beauty us only skin-deep" << std::endl;
+}
+
+int main(){
+    std::thread t1(function_1);
+
+    //====Alternative method (Wrapper method)====
+    //Alternatively USING RAII
+    //the destructor of the wrapper will automatically join the thread when the 'w' go out of scope
+    //whenever the 'w' go out of scope automatically calls the t1.join to join the thread
+    Wrapper w(t1);
+    //===========================================
+
+    <the thread can be constructed not only by regular function but class or lambda functions>
+    For ex)
+    class Fctor{
+        public:
+            void operator()(string msg){
+                cout << "t1 says: " << msg << endl;
+            }
+    };
+
+    Fctor fct; //이렇게 되면 두 thread가 동시에 출력을 하면서 정돈되지 않은 출력창을 표시하게 된다.
+    std::thread t1(fct);//creating a thread that passing a fct to the function
+    std::thread t1((Fctor()));//creating a fctor and passing it as a parameter to the constructor of t1
+    
+    string s = "where is HeeChan";
+    //way to pass the string to the thread is taking s as aditional parameter to the constructor 
+    std::thread t1((Fctor()), s);
+
+    //with or without an exception the thread will always be joined using try and catch method
+    std::try {
+            std::cout<< "from main: " << i << endl;
+    } catch (...){
+        t1.join();
+        throw;
+    }
+
+    t1.join();
+    return 0;
+}
+=============================================================================================
+Example 2: 
+#include <iostream>
+#include <thread>
+using namespace std;
+
+void function_1(){
+    std::cout << "Beauty us only skin-deep" << std::endl;
+}
+class Fctor{
+        public:
+            void operator()(string msg){
+                cout << "t1 says: " << msg << endl;
+            }
+};
+
+int main(){
+
+    string s = "where is HeeChan";
+    //way to pass the string to the thread is taking s as aditional parameter to the constructor 
+    std::thread t1((Fctor()), s);
+
+    //with or without an exception the thread will always be joined using try and catch method
+    try {
+            cout<< "from main: " << s << endl;
+    } catch (...){
+        t1.join();
+        throw;
+    }
+
+    t1.join();
+    return 0;
+}
+
+//Result
+from main: where is HeeChan
+t1 says: where is HeeChan
+===================================================================================
+Parameter to a thread is ALWAYS passed by its value
+if we want to pass the thread by its reference we have to std::ref()
+
+Example 3: 
+#include <iostream>
+#include <thread>
+using namespace std;
+class Fctor{
+        public:
+            void operator()(string& msg){
+                cout << "t1 says: " << msg << endl;
+                msg = "How we pass the string by reference";
+            }
+};
+
+int main(){
+
+    string s = "where is HeeChan";
+    std::thread t1((Fctor()), std::ref(s));//passing the string by its reference
+    std::thread t1((Fctor()), std::move(s));//this will move the s from the main thread to the child thread. This method is safe and efficient
+    t1.join(); // to make sure t1 has finished their job
+            cout<< "from main: " << s << endl;
+
+    return 0;
+}
+
+RESULT:
+t1 says: where is HeeChan
+from main: How we pass the string by reference
+===================================================================================
+** The thread object can only be moved not copy.
+    eg) std::thread t2 = t1; // compile error
+        std::thread t2 = std::move(t1);
+
+        then now we need to join t2.join(); since the t1 is empty now
+
+===Printing out the parent thread's ID===
+-> std::cout << std::this_thread::get_id() << std::endl;
+//if we put this commend inside the child thread 'this' becomes the child and prints out the child thread's ID
+
+===Printing out the child thread's ID===
+-> std::cout << t1.get_id() << std::endl;
+
+===To avoid "Oversubscription" we can check how many threads can run concurrently===
+-> std::thread::hardware_concurrency(); //Indication

@@ -124,7 +124,7 @@ if we want to pass the thread by its reference we have to std::ref()
 ========================================================================================================vv
 RACE CONDITION AND MUTEX
 
-* Race condition = one or more threads executing for the common resources
+* Race condition = one or more threads trying to execute using a common resource
 * One of the way to solve this problem is using mutex to synchronize the access of the common resource
 * 만약 cout에 관련된 문제로 oversubscription이 발생한다면 cout을 share할 수 있는 함수를 만들어주는 것이 해결책이 된다.
     Mutex of Synchronize the access of common resource among a group of threads
